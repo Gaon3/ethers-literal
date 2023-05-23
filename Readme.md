@@ -1,6 +1,7 @@
 # The `num!` and `hash!` macros for `ethers-core` types
 
 Within the  macros arguments, you can write `U256`, `I256`, `U128`, `H256` and `H160` literals using the [same syntax][rust-syntax] as Rust integer literals, but using a capital `U`, `I` or `H` suffix respectively.
+In order to make it works, you need to import `ethers`. 
 
 I just readapted https://github.com/recmo/uint
 
