@@ -7,5 +7,5 @@ edition = "2021"
 proc-macro = true
 
 [dependencies]
-ethers-core = { version = "2.0.4", default-features = false } 
+ethers = { version = "2.0.4", default-features = false } 
 hex = "0.4.3"

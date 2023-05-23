@@ -45,12 +45,13 @@ fn construct(base_type: LiteralBaseType, bits: usize, limbs: &[u64]) -> TokenStr
         write!(&mut limbs_str, "0x{limb:016x}_u64, ").unwrap();
     }
     let limbs_str = limbs_str.trim_end_matches(", ");
+
     let source = match base_type {
         LiteralBaseType::Signed => {
-            format!("::ethers_core::types::{base_type}{bits}::from_raw(::ethers_core::types::U{bits}([{limbs_str}]))")
+            format!("::ethers::core::types::{base_type}{bits}::from_raw(::ethers::core::types::U{bits}([{limbs_str}]))")
         }
         LiteralBaseType::Unsigned => {
-            format!("::ethers_core::types::{base_type}{bits}([{limbs_str}])")
+            format!("::ethers::core::types::{base_type}{bits}([{limbs_str}])")
         }
     };
     TokenStream::from_str(&source).unwrap()
@@ -187,8 +188,9 @@ fn transform_literal(source: &str) -> Result<Option<TokenStream>, String> {
     };
 
     if source.chars().nth(0).unwrap() == '-' {
-        let num =
-            ethers_core::types::I256::from_raw(ethers_core::types::U256(limbs.try_into().unwrap()));
+        let num = ethers::core::types::I256::from_raw(ethers::core::types::U256(
+            limbs.try_into().unwrap(),
+        ));
         let num = -num;
         limbs = num.into_raw().0.to_vec();
     }

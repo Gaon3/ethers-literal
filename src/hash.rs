@@ -15,7 +15,9 @@ fn construct(bits: usize, limbs: &[u8]) -> TokenStream {
         write!(&mut limbs_str, "{limb}_u8, ").unwrap();
     }
     let limbs_str = limbs_str.trim_end_matches(", ");
-    let source = format!("::ethers_core::types::H{bits}([{limbs_str}])");
+
+    let source = format!("::ethers::core::types::H{bits}([{limbs_str}])");
+
     TokenStream::from_str(&source).unwrap()
 }
 

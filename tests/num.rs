@@ -1,4 +1,4 @@
-use ethers_core::types::*;
+use ethers::core::types::*;
 use ethers_literal::num;
 
 #[test]
