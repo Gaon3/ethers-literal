@@ -4,7 +4,7 @@
 use proc_macro::{Delimiter, Group, Ident, Literal, Punct, Spacing, Span, TokenStream, TokenTree};
 use std::{fmt::Write, str::FromStr};
 
-/// Construct a `<{base_type}><{bits}>` literal from `limbs`.
+/// Construct a `H{bits}` literal from `limbs`.
 fn construct(bits: usize, limbs: &[u8]) -> TokenStream {
     let mut limbs_str = String::new();
     let mut limbs_vec = vec![0; bits / 8];

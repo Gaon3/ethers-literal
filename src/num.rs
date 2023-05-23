@@ -38,7 +38,7 @@ impl FromStr for LiteralBaseType {
     }
 }
 
-/// Construct a `<{base_type}><{bits}>` literal from `limbs`.
+/// Construct a `U{bits}` literal from `limbs`.
 fn construct(base_type: LiteralBaseType, bits: usize, limbs: &[u64]) -> TokenStream {
     let mut limbs_str = String::new();
     for limb in limbs {
@@ -187,6 +187,8 @@ fn transform_literal(source: &str) -> Result<Option<TokenStream>, String> {
         return Err(format!("Value too large for {base_type}{bits}: {value}"));
     };
 
+    // If signed integer is negative, we compute the absolute unsigned value and negate it.
+    // Calculating two's complement would be cleaner but since only I256 is signed, I got lazy.
     if source.chars().nth(0).unwrap() == '-' {
         let num = ethers::core::types::I256::from_raw(ethers::core::types::U256(
             limbs.try_into().unwrap(),
@@ -231,38 +233,3 @@ fn transform_tree(tree: TokenTree) -> TokenTree {
 pub(crate) fn transform_stream_num(stream: TokenStream) -> TokenStream {
     stream.into_iter().map(transform_tree).collect()
 }
-
-//#[cfg(test)]
-//mod tests {
-//    use super::*;
-//
-//    #[test]
-//    fn test_zero_size() {
-//        assert_eq!(parse_digits("0"), Ok(vec![0]));
-//        assert_eq!(parse_digits("00000"), Ok(vec![0]));
-//        assert_eq!(parse_digits("0x00"), Ok(vec![0]));
-//        assert_eq!(parse_digits("0b0000"), Ok(vec![0]));
-//        assert_eq!(parse_digits("0b0000000"), Ok(vec![0]));
-//
-//        assert_eq!(parse_digits("0"), Ok(vec![0]));
-//        assert_eq!(parse_digits("00000"), Ok(vec![0]));
-//        assert_eq!(parse_digits("0x00"), Ok(vec![0]));
-//        assert_eq!(parse_digits("0b0000"), Ok(vec![0]));
-//        assert_eq!(parse_digits("0b0000000"), Ok(vec![0]));
-//    }
-//
-//    #[test]
-//    fn test_bases() {
-//        assert_eq!(parse_digits("10"), Ok(vec![10]));
-//        assert_eq!(parse_digits("0x10"), Ok(vec![16]));
-//        assert_eq!(parse_digits("0b10"), Ok(vec![2]));
-//        assert_eq!(parse_digits("0o10"), Ok(vec![8]));
-//    }
-//
-//    #[test]
-//    #[allow(clippy::unreadable_literal)]
-//    fn test_overflow_during_parsing() {
-//        assert_eq!(parse_digits("258664426012969093929703085429980814127835149614277183275038967946009968870203535512256352201271898244626862047232"), Ok(vec![0, 15125697203588300800, 6414901478162127871, 13296924585243691235, 13584922160258634318, 121098312706494698]));
-//        assert_eq!(parse_digits("2135987035920910082395021706169552114602704522356652769947041607822219725780640550022962086936576"), Ok(vec![0, 0, 0, 0, 0, 1]));
-//    }
-//}
