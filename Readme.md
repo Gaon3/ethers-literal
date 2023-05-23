@@ -8,7 +8,7 @@ I just readapted https://github.com/recmo/uint
 
 ## Examples
 ```rust
-# use ethers_literal::{num, hash};
+use ethers_literal::{num, hash};
 let a = num!(4_U128);
 const b: U256 = num!(42_U256);
 const c: I256 = num!(42_I256);
