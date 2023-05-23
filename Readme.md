@@ -12,7 +12,7 @@ I just readapted https://github.com/recmo/uint
 use ethers_literal::{num, hash};
 let a = num!(4_U128);
 const b: U256 = num!(42_U256);
-const c: I256 = num!(42_I256);
+const c: I256 = num!(-0xa3_I256);
 
 let addr1 = hash!(0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640_H160);
 const hash: H256 = hash!(0x4000000000000000000000000040000000000000000000000000000000000000_H256);
